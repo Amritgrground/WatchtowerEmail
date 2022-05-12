@@ -23,9 +23,9 @@
             $popUp['subject']=$message->getSubject();
             $popUp['email']=$message->getSender()->getEmailAddress()->getAddress();
             $popUp['id']=$message->getid();
-            $popUp['attachment']=$message->getAttachments()[0]['contentBytes'];
-    var_dump($message);
-    die();
+            $popUp['attachment']=$message->getAttachments()[0]['name'];
+            $popUp['body']=$message->getbody()->getcontent();
+
             ?>
             <tr>
                 <td><?php echo $message->getSender()->getEmailAddress()->getName() ?></td>
