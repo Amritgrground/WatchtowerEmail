@@ -377,7 +377,7 @@ class CalendarController extends Controller
 
             $randomNumber = rand(500, 15000000);
             $body = 'We have received your email.You support ticket number is ' . $randomNumber . '. We will get in touch with you soon. ' ;
-            $subject = $request->eventsubject. '['.$randomNumber.']';
+            $subject = $request->eventsubject. '['.$randomNumber.']';php
             {
                 $mailBody = array(
 
