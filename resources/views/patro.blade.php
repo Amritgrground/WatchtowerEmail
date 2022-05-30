@@ -1,55 +1,66 @@
 @extends('layout')
 
 @section('content')
-    <h1>Calendar</h1>
-    <h2>{{ $dateRange }}</h2>
-    <a class="btn btn-light btn-sm mb-3" href={{action('PatroController@getNewEventForm')}}>New event Gurung</a>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Organizer</th>
             <th scope="col">Subject</th>
-            <th scope="col">Body</th>
-            <th scope="col">Start</th>
-            <th scope="col">End</th>
+            <th scope="col">Body Preview</th>
         </tr>
+
         </thead>
         <tbody>
-        @isset($patross)
-<!--            --><?php //var_dump($patross); die(); ?>
-            @foreach($patross as $event)
+        @isset($eventss)
+            @foreach ($eventss as $message)
+                <?php
+                //            dd($message);
+                //        dd($message->getFrom()->getEmailAddress()->getName() );
+                //        dd($message->getSender()->getEmailAddress()->getAddress() );
+                ?>
 
                 <tr>
-                    <td>{{ $event->getOrganizer()->getEmailAddress()->getName() }}</td>
-                    <td>{{ $event->getSubject() }}</td>
-                    {{--                    <td>{{ $event->getBody()->getContentType() }}</td>--}}
-                    <td>{{ \Carbon\Carbon::parse($event->getStart()->getDateTime())->format('n/j/y g:i A') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($event->getEnd()->getDateTime())->format('n/j/y g:i A') }}</td>
-                    <td><a class="btn btn-light btn-sm mb-3" href={{action('CalendarController@getNewEventForm')}}>New event Gurung</a> </td>
-                    <td><button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-success"  onclick='myFunction(<?php  echo json_encode($event); ?>)'>View</button></td>
+                    {{--            <td><?php echo $message->getFrom()->getEmailAddress()->getName()?></td>--}}
 
+                    <td><?php echo $message->getSubject() ?></td>
+                    <td><?php echo $message->getbodypreview() ?></td>
+                    {{--            <td><?php echo $message->getFrom()->getEmailAddress()->getName()?></td>--}}
+
+
+
+                    <td><form action="{{route('data')}}" method="POST">
+                            {{ csrf_field() }}
+                            {{--                    <input type="hidden" class="form-control" name="name" value="{{ $message->getSender()->getEmailAddress()->getName()}}" />--}}
+                            <input type="hidden" class="form-control" name="subject" value="{{$message->getSubject()}}" />
+                            {{--                    <input type="hidden" class="form-control" name="address" value="{{$message->getSender()->getEmailAddress()->getAddress()}}" />--}}
+                            {{--                    <input type="hidden" class="form-control" name="age" value="{{$message->getbodypreview()}}" />--}}
+                            <button type="submit"  name="submit" class="btn btn-primary">Please store to database</button>
+                        </form>
+                    </td>
+
+
+
+
+
+                    {{--            <td>--}}
+                    {{--                <form action="{{route('data')}}" method="POST">--}}
+                    {{--                    {{ csrf_field() }}--}}
+                    {{--                    <label>name</label>--}}
+                    {{--                    <input type="text" class="form-control" name="name"  />--}}
+                    {{--                    <label>age</label>--}}
+                    {{--                    <input type="text" class="form-control" name="age" />--}}
+                    {{--                    <label>address</label>--}}
+                    {{--                    <input type="text" class="form-control" name="address"/>--}}
+                    {{--                    <label>subject</label>--}}
+                    {{--                    <input type="text" class="form-control" name="subject"/>--}}
+                    {{--                    <label>Save</label>--}}
+                    {{--                    <input type="submit" class="btn btn-primary mr-2" />--}}
+                    {{--                    <button type="submit" class="btn btn-primary" id="btn-submit">Send back/ Reply</button>--}}
+                    {{--                    <button type="submit"  name="submit" class="btn btn-primary">Save</button>--}}
+                    {{--                </form>--}}
+                    {{--            </td>--}}
                 </tr>
-
-
             @endforeach
         @endif
         </tbody>
     </table>
 @endsection
-
-
-<script>
-    function myFunction(event) {
-        // console.log(event);
-        $('#myModal').modal('show');
-        var name=event['organizer']['emailAddress']['name'];
-        var subject=event['subject'];
-        var date=event['end']['dateTime'];
-        var body=event['end']['body'];
-        // var subject=event['start'];
-        console.log(body);
-        $("#myModal .modal-body").html('username:    '+name+'<br>'+ 'Subject :'+subject+'<br>'+ 'Date :'+date+'<br>'+ 'body :'+body+'');
-
-
-    }
-</script>
